@@ -10,10 +10,8 @@ def get_tickers() -> pd.DataFrame:
 undervalued_stocks = []
 ticker_data = get_tickers()
 ticker_symbols = ticker_data.index.to_list()
-#ticker_symbols = ["KEY","MO","T"]
 
 forecast_years = 5
-#average_fcf_growth = 0.05
 discount_rate = 0.15
 terminal_value_multiplier = 10
 
@@ -26,6 +24,7 @@ for ticker_symbol in ticker_symbols:
     try:
         stock = yf.Ticker(ticker_symbol)
         last_price = stock.history(period="1d")["Close"].iloc[-1]
+        last_price = round(last_price,2)
         cash_flow = stock.cashflow
     except Exception as e:
         print("No data found")
@@ -53,21 +52,27 @@ for ticker_symbol in ticker_symbols:
     discounted_fcf = [ fcf / ( 1 + discount_rate ) ** i for i, fcf in enumerate(forecasted_fcf,1) ]
     fair_value = sum(discounted_fcf)
     fair_value_share = fair_value / shares_outstanding
+    if isinstance(fair_value_share,complex):
+        continue
+    
+    fair_value_share = round(fair_value_share,2)
     
     if last_price < fair_value_share:
         delta = (fair_value_share - last_price) / last_price * 100
+        delta = round(delta,1)
         print(ticker_symbol)
         print(last_price)
         print(fair_value_share)
+        print(average_fcf_growth)
         print(delta)
-        data = { "Ticker":ticker_symbol, "Last price" : last_price, "Fair value" : fair_value_share, "Delta %" : delta }
+        data = { "ticker":ticker_symbol, "lastPrice" : last_price, "fairValue" : fair_value_share, "average_fcf_growth" : average_fcf_growth, "delta" : delta }
         undervalued_stocks.append(data)
         
 
 print("Analysis ended")
 print("Writing to file")
 
-columns = ["Ticker", "Last price", "Fair value", "Delta %"]
+columns = ["ticker", "lastPrice", "fairValue","average_fcf_growth", "delta"]
 
 with open("output.csv", mode="w", newline="") as file:
     writer = csv.DictWriter(file, fieldnames=columns)
