@@ -15,14 +15,9 @@ forecast_years = 5
 discount_rate = 0.15
 terminal_value_multiplier = 10
 
-index = 0
-
 # Fetch the stock data
 for ticker_symbol in ticker_symbols:
 
-    index = index + 1
-    #if index > 80:
-    #    break
 
     time.sleep(0.5)
     print(ticker_symbol)

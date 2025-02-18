@@ -29,7 +29,7 @@
 
             <!-- Right Menu -->
             <div class="w-1/3 flex justify-end space-x-6 text-lg font-medium">
-                <a href="/" class="hover:text-blue-500">Services</a>
+                <a href="/" class="hover:text-blue-500">How it works</a>
                 <a href="/" class="hover:text-blue-500">Contact</a>
             </div>
 
@@ -48,11 +48,12 @@
         class="rounded-2xl"
 	>
 		<TableHead>
-			<TableHeadCell sort={(a, b) => a.ticker.localeCompare(b.ticker)} defaultSort>Ticker</TableHeadCell>
+			<TableHeadCell sort={(a, b) => a.ticker.localeCompare(b.ticker)} defaultSort>TICKER</TableHeadCell>
 			<TableHeadCell>Stock name</TableHeadCell>
-            <TableHeadCell>Last price in USD</TableHeadCell>
-            <TableHeadCell>Fair value (DCF)</TableHeadCell>
-            <TableHeadCell sort={(a, b) => a.delta - b.delta} defaultDirection="desc">Delta</TableHeadCell>
+            <TableHeadCell>Last price [USD]</TableHeadCell>
+            <TableHeadCell>Fair value [USD] (DCF)</TableHeadCell>
+            <TableHeadCell sort={(a, b) => a.delta - b.delta} defaultDirection="desc">DELTA [%] (DCF)</TableHeadCell>
+		    <TableHeadCell>Action</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			<TableBodyRow slot="row" let:item>
@@ -61,6 +62,9 @@
                 <TableBodyCell>{item.lastPrice}</TableBodyCell>
                 <TableBodyCell>{item.fairValue}</TableBodyCell>
                 <TableBodyCell >{item.delta}</TableBodyCell>
+				<TableBodyCell>
+					<a href={`/stock/${item.ticker}`} class="font-medium text-primary-600 hover:underline dark:text-primary-500">Display valuation</a>
+				  </TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
