@@ -21,8 +21,8 @@ index = 0
 for ticker_symbol in ticker_symbols:
 
     index = index + 1
-    if index > 80:
-        break
+    #if index > 80:
+    #    break
 
     time.sleep(0.5)
     print(ticker_symbol)
@@ -52,8 +52,17 @@ for ticker_symbol in ticker_symbols:
     cashflow = operating_cashflow + capital_expenditure
     last_cashflow = cashflow.iloc[0]
     first_cashflow = cashflow.iloc[3]
-    average_fcf_growth = ( last_cashflow / first_cashflow ) ** ( 1 / 3  )  - 1 #Growth rate over last 4 years
-    forecasted_fcf = [ last_cashflow  * ( 1 + average_fcf_growth ) ** i for i in range(1,forecast_years + 1) ]
+    historic_fcf_growth = ( last_cashflow / first_cashflow ) ** ( 1 / 3  )  - 1 #Growth rate over last 4 years
+   
+    if isinstance(historic_fcf_growth,complex):
+        continue
+   
+    if historic_fcf_growth > 0.05:
+        future_fcf_growth = 0.05
+    else:
+        future_fcf_growth = historic_fcf_growth
+    
+    forecasted_fcf = [ last_cashflow  * ( 1 + future_fcf_growth ) ** i for i in range(1,forecast_years + 1) ]
     terminal_value = forecasted_fcf[-1] * terminal_value_multiplier
     forecasted_fcf.append(terminal_value)
     discounted_fcf = [ fcf / ( 1 + discount_rate ) ** i for i, fcf in enumerate(forecasted_fcf,1) ]
@@ -70,16 +79,17 @@ for ticker_symbol in ticker_symbols:
         print(ticker_symbol)
         print(last_price)
         print(fair_value_share)
-        print(average_fcf_growth)
+        print(historic_fcf_growth)
+        print(future_fcf_growth)
         print(delta)
-        data = { "ticker":ticker_symbol,"stockName" : stock_name, "lastPrice" : last_price, "fairValue" : fair_value_share, "average_fcf_growth" : average_fcf_growth, "delta" : delta }
+        data = { "ticker":ticker_symbol,"stockName" : stock_name, "lastPrice" : last_price, "fairValue" : fair_value_share, "historic_fcf_growth" : historic_fcf_growth,"future_fcf_growth" : future_fcf_growth, "delta" : delta }
         undervalued_stocks.append(data)
         
 
 print("Analysis ended")
 print("Writing to file")
 
-columns = ["ticker","stockName", "lastPrice", "fairValue","average_fcf_growth", "delta"]
+columns = ["ticker","stockName", "lastPrice", "fairValue","historic_fcf_growth","future_fcf_growth", "delta"]
 
 with open("output.csv", mode="w", newline="") as file:
     writer = csv.DictWriter(file, fieldnames=columns)

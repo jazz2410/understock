@@ -1,59 +1,68 @@
 <script lang="js">
-import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
+	import {
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Checkbox,
+		TableSearch
+	} from 'flowbite-svelte';
 
-export let data;
-
-async function updateData(){
-    data.data[1].lastPrice = '100';
-    
-        for(const stock of data.data){
-
-        console.log(stock);
-        console.log(stock.ticker)
-        const symbol = stock.ticker;  // Replace with the stock symbol you want, e.g., 'AAPL' for Apple
-        const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=1d&interval=1m`; 
-    
-        const response = await fetch(url);
-        const data = await response.json();
-        const price = data.chart.result[0].meta.regularMarketPrice;
-        console.log(price);
-        }
-
-        
-
-}
-
-onMount(() => {
-        const interval = setInterval(updateData, 5000);
-        return () => clearInterval(interval); // Cleanup on unmount
-    });
-
+	export let data;
+	const items = data.data;
 </script>
+<div class="bg-black min-h-screen text-white">
+<div class="py-5 px-25">
+    <nav class="text-white shadow-md py-3">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            
+            <!-- Left Spacer (Keeps Centered Title in Place) -->
+            <div class="w-1/3"></div>
 
-<div class="flex items-center justify-center">
+            <!-- Website Name (Centered) -->
+            <div class="w-1/3 text-center text-xl font-bold">
+                <a href="/" class="hover:text-blue-500 underline">Understocks</a>
+            </div>
 
-<h1 class="underline">Understocks</h1>
+            <!-- Right Menu -->
+            <div class="w-1/3 flex justify-end space-x-6 text-lg font-medium">
+                <a href="/" class="hover:text-blue-500">Services</a>
+                <a href="/" class="hover:text-blue-500">Contact</a>
+            </div>
 
-</div> 
-<div class="flex item-center justify-center">
-<table class="table-auto border-collapse border border-gray-300  mt-5">
-    <thead>
-      <tr class="bg-gray-200">
-        <th class="border border-gray-300 px-4 py-2">Ticker</th>
-        <th class="border border-gray-300 px-4 py-2">Stock name</th>
-        <th class="border border-gray-300 px-4 py-2">Last price in USD</th>
-        <th class="border border-gray-300 px-4 py-2">Fair value</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each data.data as item}
-        <tr class="hover:bg-gray-100">
-          <td class="border border-gray-300 px-4 py-2">{item.ticker}</td>
-          <td class="border border-gray-300 px-4 py-2">{item.stockName}</td>
-          <td class="border border-gray-300 px-4 py-2">{item.lastPrice}</td>
-          <td class="border border-gray-300 px-4 py-2">{item.fairValue}</td>
-        </tr>
-      {/each}
-    </tbody>
-</table>
+        </div>
+    </nav>
+</div>
+
+<div class="item-center flex justify-center">
+	<Table
+		{items}
+        striped={true}
+		placeholder="Search by ticker or stock name"
+		hoverable={true}
+		filter={(item, searchTerm) => item.ticker.toLowerCase().includes(searchTerm.toLowerCase())
+                                   || item.stockName.toLowerCase().includes(searchTerm.toLowerCase())                        }
+        class="rounded-2xl"
+	>
+		<TableHead>
+			<TableHeadCell sort={(a, b) => a.ticker.localeCompare(b.ticker)} defaultSort>Ticker</TableHeadCell>
+			<TableHeadCell>Stock name</TableHeadCell>
+            <TableHeadCell>Last price in USD</TableHeadCell>
+            <TableHeadCell>Fair value (DCF)</TableHeadCell>
+            <TableHeadCell sort={(a, b) => a.delta - b.delta} defaultDirection="desc">Delta</TableHeadCell>
+		</TableHead>
+		<TableBody tableBodyClass="divide-y">
+			<TableBodyRow slot="row" let:item>
+				<TableBodyCell>{item.ticker}</TableBodyCell>
+				<TableBodyCell>{item.stockName}</TableBodyCell>
+                <TableBodyCell>{item.lastPrice}</TableBodyCell>
+                <TableBodyCell>{item.fairValue}</TableBodyCell>
+                <TableBodyCell >{item.delta}</TableBodyCell>
+			</TableBodyRow>
+		</TableBody>
+	</Table>
+</div>
 </div>
