@@ -15,8 +15,14 @@ forecast_years = 5
 discount_rate = 0.15
 terminal_value_multiplier = 10
 
+index = 0
+
 # Fetch the stock data
 for ticker_symbol in ticker_symbols:
+
+    index = index + 1
+    if index > 80:
+        break
 
     time.sleep(0.5)
     print(ticker_symbol)
@@ -25,6 +31,7 @@ for ticker_symbol in ticker_symbols:
         stock = yf.Ticker(ticker_symbol)
         last_price = stock.history(period="1d")["Close"].iloc[-1]
         last_price = round(last_price,2)
+        stock_name = stock.info.get("longName", "Name not found")
         cash_flow = stock.cashflow
     except Exception as e:
         print("No data found")
@@ -65,14 +72,14 @@ for ticker_symbol in ticker_symbols:
         print(fair_value_share)
         print(average_fcf_growth)
         print(delta)
-        data = { "ticker":ticker_symbol, "lastPrice" : last_price, "fairValue" : fair_value_share, "average_fcf_growth" : average_fcf_growth, "delta" : delta }
+        data = { "ticker":ticker_symbol,"stockName" : stock_name, "lastPrice" : last_price, "fairValue" : fair_value_share, "average_fcf_growth" : average_fcf_growth, "delta" : delta }
         undervalued_stocks.append(data)
         
 
 print("Analysis ended")
 print("Writing to file")
 
-columns = ["ticker", "lastPrice", "fairValue","average_fcf_growth", "delta"]
+columns = ["ticker","stockName", "lastPrice", "fairValue","average_fcf_growth", "delta"]
 
 with open("output.csv", mode="w", newline="") as file:
     writer = csv.DictWriter(file, fieldnames=columns)
