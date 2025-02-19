@@ -19,3 +19,10 @@ app.add_middleware(
 def read_root():
     df = pd.read_csv("output.csv")
     return df.to_dict(orient="records")
+
+@app.get("/stock/{ticker}")
+async def get_stock(ticker: str):
+    df = pd.read_csv("output.csv")
+    filtered_df = df[df['ticker'] == ticker]
+    return filtered_df.to_dict(orient="records")
+    
