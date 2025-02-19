@@ -60,6 +60,9 @@
 		({stockData.length > 0 ? stockData[0].ticker : 'Loading...'})
 	</h1>
   <h1 class="text-1xl font-semibold text-white" >
+    Last price [USD]: {stockData.length > 0 ?  stockData[0].lastPrice  : 'Loading...'}
+  </h1>
+  <h1 class="text-1xl font-semibold text-white" >
     Historic FCF growth rate [%]: {stockData.length > 0 ? ( stockData[0].historic_fcf_growth * 100 ).toFixed(2) : 'Loading...'}
   </h1>
   <h1 class="text-1xl font-semibold text-white" >
@@ -78,12 +81,12 @@
 	<Table hoverable={true} striped={true}>
 		<TableHead>
 			<TableHeadCell class="!p-4"></TableHeadCell>
-			<TableHeadCell>Latest CF</TableHeadCell>
-			<TableHeadCell>Latest CF +1 years</TableHeadCell>
-			<TableHeadCell>Latest CF +2 years</TableHeadCell>
-			<TableHeadCell>Latest CF +3 years</TableHeadCell>
-			<TableHeadCell>Latest CF +4 years</TableHeadCell>
-      <TableHeadCell>Latest CF +5 years</TableHeadCell>
+			<TableHeadCell>Current year</TableHeadCell>
+			<TableHeadCell>Current year +1 year</TableHeadCell>
+			<TableHeadCell>Current year +2 years</TableHeadCell>
+			<TableHeadCell>Current year +3 years</TableHeadCell>
+			<TableHeadCell>Current year +4 years</TableHeadCell>
+      <TableHeadCell>Current year +5 years</TableHeadCell>
       <TableHeadCell>Termination value</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
@@ -100,12 +103,12 @@
 			<TableBodyRow>
 				<TableBodyCell class="!p-4">DCF</TableBodyCell>
 				<TableBodyCell>-</TableBodyCell>
-				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_1)   : 'Loading...'}</TableBodyCell>
-				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_2)   : 'Loading...'}</TableBodyCell>
-				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_3)   : 'Loading...'}</TableBodyCell>
-				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_4)   : 'Loading...'}</TableBodyCell>
-        <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_5)   : 'Loading...'}</TableBodyCell>
-        <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_6)   : 'Loading...'}</TableBodyCell>
+				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_1)   : 'Loading...'} (+)</TableBodyCell>
+				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_2)   : 'Loading...'} (+)</TableBodyCell>
+				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_3)   : 'Loading...'} (+)</TableBodyCell>
+				<TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_4)   : 'Loading...'} (+)</TableBodyCell>
+        <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_5)   : 'Loading...'} (+)</TableBodyCell>
+        <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_6)   : 'Loading...'} (+)</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
 				<TableBodyCell class="!p-4">Fair value</TableBodyCell>
@@ -115,7 +118,7 @@
 				<TableBodyCell></TableBodyCell>
 				<TableBodyCell></TableBodyCell>
         <TableBodyCell></TableBodyCell>
-        <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].fairValue)   : 'Loading...'}</TableBodyCell>
+        <TableBodyCell> = {stockData.length > 0 ? formatNumber(stockData[0].fairValue)   : 'Loading...'}</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
