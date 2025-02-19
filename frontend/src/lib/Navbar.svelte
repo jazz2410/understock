@@ -6,7 +6,7 @@
 
         <!-- Website Name (Centered) -->
         <div class="w-1/3 text-center text-xl font-bold">
-            <a href="/" class="hover:text-blue-500 underline">Understocks</a>
+            <a href="/" class="hover:text-blue-500 ">Understocks</a>
         </div>
 
         <!-- Right Menu -->

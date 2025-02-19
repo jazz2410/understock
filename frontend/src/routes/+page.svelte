@@ -15,7 +15,6 @@
 	const items = data.data;
 </script>
 
-
 <div class="item-center flex justify-center">
 	<Table
 		{items}
