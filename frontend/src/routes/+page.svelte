@@ -38,7 +38,7 @@
 				<TableBodyCell>{item.ticker}</TableBodyCell>
 				<TableBodyCell>{item.stockName}</TableBodyCell>
                 <TableBodyCell>{item.lastPrice}</TableBodyCell>
-                <TableBodyCell>{item.fairValue}</TableBodyCell>
+                <TableBodyCell>{item.fairValueShare}</TableBodyCell>
                 <TableBodyCell>{item.delta}</TableBodyCell>
 				<TableBodyCell>
 					<a href={`/stock/${item.ticker}`} class="font-medium text-primary-600 hover:underline dark:text-primary-500">Display valuation</a>

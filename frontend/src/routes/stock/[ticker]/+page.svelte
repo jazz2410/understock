@@ -10,6 +10,8 @@
 		TableHeadCell,
 		Checkbox
 	} from 'flowbite-svelte';
+  import { Card } from 'flowbite-svelte';
+
 	let ticker;
 	let userData;
 	let stockData = [];
@@ -37,14 +39,24 @@
 	}
 </script>
 
-<div class="item-center flex justify-center py-6">
-	<h1>
+<Card>
+	<h1 class="text-2xl font-bold text-white">
 		{stockData.length > 0 ? stockData[0].stockName : 'Loading...'}
 		({stockData.length > 0 ? stockData[0].ticker : 'Loading...'})
 	</h1>
+  <h1 class="text-1xl font-semibold text-white" >
+    Historic growth rate [%]: {stockData.length > 0 ? ( stockData[0].historic_fcf_growth * 100 ).toFixed(2) : 'Loading...'}
+  </h1>
+  <h1 class="text-1xl font-semibold text-white" >
+    Calculated future growth rate [%]: {stockData.length > 0 ? ( stockData[0].future_fcf_growth * 100 ).toFixed(2) : 'Loading...'}
+  </h1>
+</Card>
+
+<div class="item-center flex justify-center mt-1">
+
 </div>
 
-<div class="item-center flex justify-center">
+<div class="item-center flex justify-center mt-1">
 	<Table hoverable={true} striped={true}>
 		<TableHead>
 			<TableHeadCell class="!p-4"></TableHeadCell>
@@ -78,14 +90,14 @@
         <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_6)   : 'Loading...'}</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
-				<TableBodyCell class="!p-4">Result</TableBodyCell>
-				<TableBodyCell>Magic</TableBodyCell>
-				<TableBodyCell>Black</TableBodyCell>
-				<TableBodyCell>Accessories</TableBodyCell>
-				<TableBodyCell>$99</TableBodyCell>
+				<TableBodyCell class="!p-4">Fair value</TableBodyCell>
+				<TableBodyCell></TableBodyCell>
+				<TableBodyCell></TableBodyCell>
+				<TableBodyCell></TableBodyCell>
+				<TableBodyCell></TableBodyCell>
 				<TableBodyCell></TableBodyCell>
         <TableBodyCell></TableBodyCell>
-        <TableBodyCell></TableBodyCell>
+        <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].fairValue)   : 'Loading...'}</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>

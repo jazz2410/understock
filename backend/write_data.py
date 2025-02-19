@@ -76,14 +76,14 @@ for ticker_symbol in ticker_symbols:
         print(historic_fcf_growth)
         print(future_fcf_growth)
         print(delta)
-        data = { "ticker":ticker_symbol,"stockName" : stock_name, "lastPrice" : last_price, "fairValue" : fair_value_share, "historic_fcf_growth" : historic_fcf_growth,"future_fcf_growth" : future_fcf_growth, "delta" : delta,"last_cf" : last_cashflow,"fcf_1" : forecasted_fcf[0], "fcf_2" : forecasted_fcf[1], "fcf_3" : forecasted_fcf[2], 'fcf_4' : forecasted_fcf[3], 'fcf_5' : forecasted_fcf[4],'fcf_6' : forecasted_fcf[5],"dcf_1" : discounted_fcf[0], "dcf_2" : discounted_fcf[1], "dcf_3" : discounted_fcf[2], "dcf_4" : discounted_fcf[3], "dcf_5" : discounted_fcf[4],"dcf_6" : discounted_fcf[5] }
+        data = { "ticker":ticker_symbol,"stockName" : stock_name, "lastPrice" : last_price, "fairValue" : fair_value,"fairValueShare" : fair_value_share,"sharesOutstanding" : shares_outstanding, "historic_fcf_growth" : historic_fcf_growth,"future_fcf_growth" : future_fcf_growth, "delta" : delta,"last_cf" : last_cashflow,"fcf_1" : forecasted_fcf[0], "fcf_2" : forecasted_fcf[1], "fcf_3" : forecasted_fcf[2], 'fcf_4' : forecasted_fcf[3], 'fcf_5' : forecasted_fcf[4],'fcf_6' : forecasted_fcf[5],"dcf_1" : discounted_fcf[0], "dcf_2" : discounted_fcf[1], "dcf_3" : discounted_fcf[2], "dcf_4" : discounted_fcf[3], "dcf_5" : discounted_fcf[4],"dcf_6" : discounted_fcf[5] }
         undervalued_stocks.append(data)
         
 
 print("Analysis ended")
 print("Writing to file")
 
-columns = ["ticker","stockName", "lastPrice", "fairValue","historic_fcf_growth","future_fcf_growth", "delta","last_cf","fcf_1","fcf_2","fcf_3","fcf_4","fcf_5","fcf_6","dcf_1","dcf_2","dcf_3","dcf_4","dcf_5","dcf_6"]
+columns = ["ticker","stockName", "lastPrice", "fairValue","fairValueShare","sharesOutstanding","historic_fcf_growth","future_fcf_growth", "delta","last_cf","fcf_1","fcf_2","fcf_3","fcf_4","fcf_5","fcf_6","dcf_1","dcf_2","dcf_3","dcf_4","dcf_5","dcf_6"]
 
 with open("output.csv", mode="w", newline="") as file:
     writer = csv.DictWriter(file, fieldnames=columns)
