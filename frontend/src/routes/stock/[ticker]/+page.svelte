@@ -25,6 +25,7 @@
 		try {
 			const response = await fetch(`http://localhost:8000/stock/${ticker}`);
 			stockData = await response.json();
+      console.log(stockData)
 		} catch (e) {
 			console.error('Error fetching stock data:', e);
 		}
@@ -37,24 +38,41 @@
 			maximumFractionDigits: 2
 		}).format(value / 1_000_000); // Divide by 1 million and format
 	}
+  function formatNumber2(value) {
+		if (value === undefined || value === null) return '-'; // Handle undefined values
+		return new Intl.NumberFormat('en-US', {
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 0
+		}).format(value * 1); // Divide by 1 million and format
+	}
+  function formatNumber3(value) {
+		if (value === undefined || value === null) return '-'; // Handle undefined values
+		return new Intl.NumberFormat('en-US', {
+			minimumFractionDigits: 2,
+			maximumFractionDigits: 2
+		}).format(value * 1); // Divide by 1 million and format
+	}
 </script>
 
 <Card>
-	<h1 class="text-2xl font-bold text-white">
+	<h1 class="text-2xl font-bold text-white mb-2">
 		{stockData.length > 0 ? stockData[0].stockName : 'Loading...'}
 		({stockData.length > 0 ? stockData[0].ticker : 'Loading...'})
 	</h1>
   <h1 class="text-1xl font-semibold text-white" >
-    Historic growth rate [%]: {stockData.length > 0 ? ( stockData[0].historic_fcf_growth * 100 ).toFixed(2) : 'Loading...'}
+    Historic FCF growth rate [%]: {stockData.length > 0 ? ( stockData[0].historic_fcf_growth * 100 ).toFixed(2) : 'Loading...'}
   </h1>
   <h1 class="text-1xl font-semibold text-white" >
-    Calculated future growth rate [%]: {stockData.length > 0 ? ( stockData[0].future_fcf_growth * 100 ).toFixed(2) : 'Loading...'}
+    Future FCF growth rate [%]: {stockData.length > 0 ? ( stockData[0].future_fcf_growth * 100 ).toFixed(2) : 'Loading...'}
+  </h1> 
+  <h1 class="text-1xl font-semibold text-white" >
+    Discount rate [%]: 15
+  </h1>
+  <h1 class="text-1xl font-semibold text-white" >
+    Shares outstanding: {stockData.length > 0 ? formatNumber2(stockData[0].sharesOutstanding) : 'Loading...'}
   </h1>
 </Card>
 
-<div class="item-center flex justify-center mt-1">
-
-</div>
 
 <div class="item-center flex justify-center mt-1">
 	<Table hoverable={true} striped={true}>
@@ -103,5 +121,13 @@
 	</Table>
 </div>
 <div class="item-center flex justify-center mt-3">
-<p style="font-size: 0.9em; color: gray;">Numbers are in millions and USD.</p>
+<p style="font-size: 0.9em; color: gray;">Numbers are in millions and USD. CF = Cashflow.
+  FCF = Future Cashflows. DCF = Discounted Cashflows.
+</p>
+</div>
+<div class="item-center flex justify-center mt-2 ">
+  <Card class="min-w-2xl">
+ <p class="font-semibold text-l text-white mb-2">Fair value per share = Fair value / Shares outstanding </p>
+ <p class="text-xl text-white"><span class="underline decoration-double font-bold">{stockData.length > 0 ? stockData[0].fairValueShare   : 'Loading...'} USD</span> = {stockData.length > 0 ? formatNumber3(stockData[0].fairValue)   : 'Loading...'} USD / {stockData.length > 0 ? formatNumber2(stockData[0].sharesOutstanding) : 'Loading...'} </p>
+</Card>
 </div>
