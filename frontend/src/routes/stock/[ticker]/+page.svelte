@@ -111,7 +111,7 @@
         <TableBodyCell>{stockData.length > 0 ? formatNumber(stockData[0].dcf_6)   : 'Loading...'} (+)</TableBodyCell>
 			</TableBodyRow>
 			<TableBodyRow>
-				<TableBodyCell class="!p-4">Fair value</TableBodyCell>
+				<TableBodyCell class="!p-4">Fair value (Sum of DCF)</TableBodyCell>
 				<TableBodyCell></TableBodyCell>
 				<TableBodyCell></TableBodyCell>
 				<TableBodyCell></TableBodyCell>
@@ -129,7 +129,7 @@
 </p>
 </div>
 <div class="item-center flex justify-center mt-2 ">
-  <Card class="min-w-2xl">
+  <Card class="min-w-xl">
  <p class="font-semibold text-l text-white mb-2">Fair value per share = Fair value / Shares outstanding </p>
  <p class="text-xl text-white"><span class="underline decoration-double font-bold">{stockData.length > 0 ? stockData[0].fairValueShare   : 'Loading...'} USD</span> = {stockData.length > 0 ? formatNumber3(stockData[0].fairValue)   : 'Loading...'} USD / {stockData.length > 0 ? formatNumber2(stockData[0].sharesOutstanding) : 'Loading...'} </p>
 </Card>
