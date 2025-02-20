@@ -1,0 +1,7 @@
+services:
+  script:
+    build: ./script
+    volumes:
+      - csv-data:/app/data
+    restart: unless-stopped
+    command: ["sh", "-c", "while true; do python write_data.py && sleep 86400; done"]

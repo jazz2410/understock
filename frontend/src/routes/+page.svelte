@@ -13,8 +13,11 @@
 
 	export let data;
 	const items = data.data;
+	console.log(items[0].timestamp)
 </script>
-
+<div class="flex ml-25">
+<p class="font-light">Data updated: {items[0].timestamp}</p>
+</div>
 <div class="item-center flex justify-center">
 	<Table
 		{items}
@@ -25,6 +28,7 @@
                                    || item.stockName.toLowerCase().includes(searchTerm.toLowerCase())                        }
         class="rounded-2xl"
 	>
+	
 		<TableHead>
 			<TableHeadCell sort={(a, b) => a.ticker.localeCompare(b.ticker)} defaultSort>TICKER</TableHeadCell>
 			<TableHeadCell>Stock name</TableHeadCell>
