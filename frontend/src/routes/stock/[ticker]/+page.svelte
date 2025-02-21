@@ -54,7 +54,7 @@
 	}
 </script>
 
-<Card>
+<Card color="black">
 	<h1 class="text-2xl font-bold text-white mb-2">
 		{stockData.length > 0 ? stockData[0].stockName : 'Loading...'}
 		({stockData.length > 0 ? stockData[0].ticker : 'Loading...'})
@@ -81,13 +81,13 @@
 	<Table hoverable={true} striped={true}>
 		<TableHead>
 			<TableHeadCell class="!p-4"></TableHeadCell>
-			<TableHeadCell>Current year</TableHeadCell>
-			<TableHeadCell>Current year +1 year</TableHeadCell>
-			<TableHeadCell>Current year +2 years</TableHeadCell>
-			<TableHeadCell>Current year +3 years</TableHeadCell>
-			<TableHeadCell>Current year +4 years</TableHeadCell>
-      <TableHeadCell>Current year +5 years</TableHeadCell>
-      <TableHeadCell>Termination value</TableHeadCell>
+			<TableHeadCell class="text-white">Current year</TableHeadCell>
+			<TableHeadCell class="text-white">Current year +1 year</TableHeadCell>
+			<TableHeadCell class="text-white">Current year +2 years</TableHeadCell>
+			<TableHeadCell class="text-white">Current year +3 years</TableHeadCell>
+			<TableHeadCell class="text-white">Current year +4 years</TableHeadCell>
+      <TableHeadCell class="text-white">Current year +5 years</TableHeadCell>
+      <TableHeadCell class="text-white">Termination value</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			<TableBodyRow>
@@ -129,7 +129,7 @@
 </p>
 </div>
 <div class="item-center flex justify-center mt-2 ">
-  <Card class="min-w-xl">
+  <Card color="black" class="min-w-xl">
  <p class="font-semibold text-l text-white mb-2">Fair value per share = Fair value / Shares outstanding </p>
  <p class="text-xl text-white"><span class="underline decoration-double font-bold">{stockData.length > 0 ? stockData[0].fairValueShare   : 'Loading...'} USD</span> = {stockData.length > 0 ? formatNumber3(stockData[0].fairValue)   : 'Loading...'} USD / {stockData.length > 0 ? formatNumber2(stockData[0].sharesOutstanding) : 'Loading...'} </p>
 </Card>

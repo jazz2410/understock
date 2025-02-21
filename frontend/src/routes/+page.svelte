@@ -13,11 +13,9 @@
 
 	export let data;
 	const items = data.data;
-	console.log(items[0].timestamp)
+
 </script>
-<div class="flex ml-25">
-<p class="font-light">Data updated: {items[0].timestamp}</p>
-</div>
+
 <div class="item-center flex justify-center">
 	<Table
 		{items}
@@ -30,12 +28,12 @@
 	>
 	
 		<TableHead>
-			<TableHeadCell sort={(a, b) => a.ticker.localeCompare(b.ticker)} defaultSort>TICKER</TableHeadCell>
-			<TableHeadCell>Stock name</TableHeadCell>
-            <TableHeadCell>Last price [USD]</TableHeadCell>
-            <TableHeadCell>Fair value [USD] (DCF)</TableHeadCell>
-            <TableHeadCell sort={(a, b) => a.delta - b.delta} defaultDirection="desc">DELTA [%] (DCF)</TableHeadCell>
-		    <TableHeadCell>Action</TableHeadCell>
+			<TableHeadCell class="text-white" sort={(a, b) => a.ticker.localeCompare(b.ticker)} defaultSort>TICKER</TableHeadCell>
+			<TableHeadCell class="text-white">Stock name</TableHeadCell>
+            <TableHeadCell class="text-white">Last price [USD]</TableHeadCell>
+            <TableHeadCell class="text-white">Fair value [USD] (DCF)</TableHeadCell>
+            <TableHeadCell class="text-white" sort={(a, b) => a.delta - b.delta} defaultDirection="desc">DELTA [%] (DCF)</TableHeadCell>
+		    <TableHeadCell class="text-white">Action</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			<TableBodyRow slot="row" let:item>

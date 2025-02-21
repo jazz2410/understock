@@ -8,14 +8,14 @@ app = FastAPI()
 # Allow CORS for frontend (SvelteKit)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # SvelteKit dev server
+    allow_origins=["http://localhost:3000"],  # SvelteKit dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-@app.get("/")
+@app.get("/stocks")
 def read_root():
     df = pd.read_csv("../script/output.csv")
     return df.to_dict(orient="records")
