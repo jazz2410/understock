@@ -23,7 +23,8 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`/api/stock/${ticker}`);
+			//const response = await fetch(`/api/stock/${ticker}`);
+			const response = await fetch(`http://localhost:8000/stock/${ticker}`);
 			stockData = await response.json();
       console.log(stockData)
 		} catch (e) {
