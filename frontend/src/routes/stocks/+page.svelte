@@ -11,12 +11,26 @@
 		TableSearch
 	} from 'flowbite-svelte';
 
-	export let data;
-	const items = data.data;
+	let items = [];
+
+    onMount(async () => {
+        try {
+            //const response = await fetch('http://localhost:8000/stocks');
+			const response = await fetch('/api/stocks');
+            items = await response.json();
+			console.log(items);
+        } catch (error) {
+            console.error('Error fetching stocks:', error);
+        }
+    });
 
 </script>
 
+
+
+
 <div class="item-center flex justify-center">
+	{#if items.length}
 	<Table
 		{items}
         striped={true}
@@ -48,4 +62,7 @@
 			</TableBodyRow>
 		</TableBody>
 	</Table>
+	{:else}
+	<p>Loading data...</p>
+	{/if}
 </div>
