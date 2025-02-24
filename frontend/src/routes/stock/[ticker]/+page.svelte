@@ -12,6 +12,7 @@
 	} from 'flowbite-svelte';
 	import { Card } from 'flowbite-svelte';
 	import Footer from '$lib/Footer.svelte';
+	import { goto } from '$app/navigation';
 	let ticker;
 	let userData;
 	let stockData = [];

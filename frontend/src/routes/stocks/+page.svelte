@@ -10,7 +10,7 @@
 		Checkbox,
 		TableSearch
 	} from 'flowbite-svelte';
-
+	import { goto } from '$app/navigation';
 	import Footer from '$lib/Footer.svelte';
 	let items = [];
 
@@ -57,8 +57,10 @@
                 <TableBodyCell>{item.fairValueShare}</TableBodyCell>
                 <TableBodyCell>{item.delta}</TableBodyCell>
 				<TableBodyCell>
-					<a href={`/stock/${item.ticker}`} class="font-medium text-primary-600 hover:underline dark:text-primary-500">Display valuation</a>
-				  </TableBodyCell>
+					<button on:click={() => goto(`/stock/${item.ticker}`)} class="px-1 py-1 my-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-black font-semibold shadow-md 
+               transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 
+               focus:ring-orange-400 dark:text-white">See evaluation</button>
+				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
