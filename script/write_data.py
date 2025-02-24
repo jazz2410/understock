@@ -88,7 +88,7 @@ print("Writing to file")
 
 columns = ["ticker","stockName", "lastPrice", "fairValue","fairValueShare","sharesOutstanding","historic_fcf_growth","future_fcf_growth", "delta","last_cf","fcf_1","fcf_2","fcf_3","fcf_4","fcf_5","fcf_6","dcf_1","dcf_2","dcf_3","dcf_4","dcf_5","dcf_6","timestamp"]
 
-with open("output.csv", mode="w", newline="") as file:
+with open("/var/www/understock/script/output.csv", mode="w", newline="") as file:
     writer = csv.DictWriter(file, fieldnames=columns)
     writer.writeheader()  # Write column names
     writer.writerows(undervalued_stocks)  # Write rows
