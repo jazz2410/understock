@@ -24,8 +24,8 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`/api/stock/${ticker}`);
-			//const response = await fetch(`http://localhost:8000/stock/${ticker}`);
+			//const response = await fetch(`/api/stock/${ticker}`);
+			const response = await fetch(`http://localhost:8000/stock/${ticker}`);
 			stockData = await response.json();
 			console.log(stockData);
 		} catch (e) {
@@ -87,7 +87,7 @@
 		<TableHead>
 			<TableHeadCell class="!p-4"></TableHeadCell>
 			<TableHeadCell class="text-white">Last reported</TableHeadCell>
-			<TableHeadCell class="text-white">Last reported +1 year</TableHeadCell>
+			<TableHeadCell class="text-white">Last reported +1 years</TableHeadCell>
 			<TableHeadCell class="text-white">Last reported +2 years</TableHeadCell>
 			<TableHeadCell class="text-white">Last reported +3 years</TableHeadCell>
 			<TableHeadCell class="text-white">Last reported +4 years</TableHeadCell>

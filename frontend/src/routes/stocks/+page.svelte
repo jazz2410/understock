@@ -16,8 +16,8 @@
 
     onMount(async () => {
         try {
-    	  //const response = await fetch('http://localhost:8000/stocks');
-	    	const response = await fetch('/api/stocks');
+    	  const response = await fetch('http://localhost:8000/stocks');
+			//const response = await fetch('/api/stocks');
             items = await response.json();
 			console.log(items);
         } catch (error) {
@@ -31,6 +31,7 @@
 	<div class="w-full max-w-6xl overflow-x-auto">
 	{#if items.length}
 	<p class="mb-4 text-sm text-gray-400 text-center">📅 Table was updated on {items[0].timestamp}</p>
+	<p class="text-center">Click on the ticker symbol to see the evaluation</p>
 	<Table
 		{items}
         striped={true}
@@ -47,20 +48,24 @@
             <TableHeadCell class="text-white">Last price [USD]</TableHeadCell>
             <TableHeadCell class="text-white">Fair value [USD] (DCF)</TableHeadCell>
             <TableHeadCell class="text-white" sort={(a, b) => a.delta - b.delta} defaultDirection="desc">DELTA [%] (DCF)</TableHeadCell>
-		    <TableHeadCell class="text-white">Action</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			<TableBodyRow slot="row" let:item>
-				<TableBodyCell>{item.ticker}</TableBodyCell>
-				<TableBodyCell>{item.stockName}</TableBodyCell>
+				
+				<TableBodyCell>
+					<button on:click={() => goto(`/stock/${item.ticker}`)} class="w-20 h-10 cursor-pointer hover:bg-orange-400">
+						{item.ticker}
+					</button>
+				</TableBodyCell>
+
+				<TableBodyCell>
+					<button on:click={() => goto(`/stock/${item.ticker}`)} class="cursor-pointer w-full h-10 hover:bg-orange-400">
+						{item.stockName}
+					</button>
+				</TableBodyCell>
                 <TableBodyCell>{item.lastPrice}</TableBodyCell>
                 <TableBodyCell>{item.fairValueShare}</TableBodyCell>
                 <TableBodyCell>{item.delta}</TableBodyCell>
-				<TableBodyCell>
-					<button on:click={() => goto(`/stock/${item.ticker}`)} class="px-1 py-1 my-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-black font-semibold shadow-md 
-               transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 
-               focus:ring-orange-400 dark:text-white">See evaluation</button>
-				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
 	</Table>
