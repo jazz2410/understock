@@ -11,7 +11,7 @@
 		Checkbox
 	} from 'flowbite-svelte';
 	import { Card } from 'flowbite-svelte';
-
+	import Footer from '$lib/Footer.svelte';
 	let ticker;
 	let userData;
 	let stockData = [];
@@ -85,12 +85,12 @@
 	<Table hoverable={true} striped={true}>
 		<TableHead>
 			<TableHeadCell class="!p-4"></TableHeadCell>
-			<TableHeadCell class="text-white">Current year</TableHeadCell>
-			<TableHeadCell class="text-white">Current year +1 year</TableHeadCell>
-			<TableHeadCell class="text-white">Current year +2 years</TableHeadCell>
-			<TableHeadCell class="text-white">Current year +3 years</TableHeadCell>
-			<TableHeadCell class="text-white">Current year +4 years</TableHeadCell>
-			<TableHeadCell class="text-white">Current year +5 years</TableHeadCell>
+			<TableHeadCell class="text-white">Last reported</TableHeadCell>
+			<TableHeadCell class="text-white">Last reported +1 year</TableHeadCell>
+			<TableHeadCell class="text-white">Last reported +2 years</TableHeadCell>
+			<TableHeadCell class="text-white">Last reported +3 years</TableHeadCell>
+			<TableHeadCell class="text-white">Last reported +4 years</TableHeadCell>
+			<TableHeadCell class="text-white">Last reported +5 years</TableHeadCell>
 			<TableHeadCell class="text-white">Termination value</TableHeadCell>
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
@@ -180,9 +180,6 @@
 		</p>
 	</Card>
 </div>
-
-<div>
-	<p>Impressum</p>
-</div>
 </div>
 
+<Footer></Footer>

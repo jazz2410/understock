@@ -11,6 +11,7 @@
 		TableSearch
 	} from 'flowbite-svelte';
 
+	import Footer from '$lib/Footer.svelte';
 	let items = [];
 
     onMount(async () => {
@@ -40,7 +41,7 @@
         class="rounded-2xl"
 	>
 	
-		<TableHead>
+		<TableHead class="rounded-t-2xl">
 			<TableHeadCell class="text-white" sort={(a, b) => a.ticker.localeCompare(b.ticker)} defaultSort>TICKER</TableHeadCell>
 			<TableHeadCell class="text-white">Stock name</TableHeadCell>
             <TableHeadCell class="text-white">Last price [USD]</TableHeadCell>
@@ -67,4 +68,4 @@
 </div>
 </div>
 
-
+<Footer></Footer>

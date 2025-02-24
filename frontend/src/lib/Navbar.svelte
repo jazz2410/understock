@@ -12,7 +12,7 @@
   
           <!-- Website Name (Centered) -->
           <div class="text-xl font-bold flex-1 text-center lg:text-left">
-              <a href="/" class="hover:text-blue-500">Understocks</a>
+              <a href="/" class="hover:text-blue-500 underline">Understocks</a>
           </div>
   
           <!-- Right Menu (Desktop) -->
