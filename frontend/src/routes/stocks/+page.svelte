@@ -26,16 +26,10 @@
 
 </script>
 
-{#if items.length}
-<div class="max-h-2.5 max-w-xl ml-46 mb-3 ">
-	<p>Data updated: {items[0].timestamp}</p>
-</div>
-{:else}
-<p>Loading data...</p>
-{/if}
-
-<div class="item-center flex justify-center">
+<div class="items-center flex justify-center">
+	<div class="w-full max-w-6xl overflow-x-auto">
 	{#if items.length}
+	<p class="mb-4 text-sm text-gray-400 text-center">📅 Table was updated on {items[0].timestamp}</p>
 	<Table
 		{items}
         striped={true}
@@ -71,3 +65,6 @@
 	<p>Loading data...</p>
 	{/if}
 </div>
+</div>
+
+
