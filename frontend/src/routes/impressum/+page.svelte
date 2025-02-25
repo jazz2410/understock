@@ -2,7 +2,7 @@
 	import Footer from "$lib/Footer.svelte";
 
 </script>
-<div class="py-20 px-15">
+<div class="py-20 px-5 md:px-15">
     
 	<h1 class="mb-3 text-3xl font-bold underline">Imprint</h1>
 	<p class="mb-1">Tajinder Singh Dhaliwal  </p>

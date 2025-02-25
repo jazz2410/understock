@@ -3,7 +3,7 @@
 
 </script>
 
-<div class="px-15 py-20">
+<div class="px-5 md:px-15 py-20">
 	<h1 class="mb-3 text-3xl font-bold underline">Terms of use</h1>
 	<h1 class="mb-3 text-2xl font-bold">Understocks does not provide any investment advice</h1>
 	<p class="mb-3">
