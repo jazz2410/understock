@@ -171,7 +171,7 @@
 			Fair value per share = Fair value / Shares outstanding
 		</p>
 		<p class="text-xl text-white">
-			<span class="font-bold underline decoration-double"
+			<span class="font-extrabold underline decoration-double text-orange-600"
 				>{stockData.length > 0 ? stockData[0].fairValueShare : 'Loading...'} USD</span
 			>
 			= {stockData.length > 0 ? formatNumber3(stockData[0].fairValue) : 'Loading...'} USD / {stockData.length >

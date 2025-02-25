@@ -12,7 +12,7 @@
       </p>
       <button on:click={() => goto('/stocks')} class="px-6 py-5 my-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-black font-semibold shadow-md 
                transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 
-               focus:ring-orange-400 dark:text-white">
+               focus:ring-orange-400 dark:text-white cursor-pointer">
         See undervalued stocks
 </button>
 
