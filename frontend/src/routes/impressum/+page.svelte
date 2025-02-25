@@ -2,14 +2,15 @@
 	import Footer from "$lib/Footer.svelte";
 
 </script>
-<div class="py-20 px-40">
+<div class="py-20 px-15">
+    
 	<h1 class="mb-3 text-3xl font-bold underline">Imprint</h1>
 	<p class="mb-1">Tajinder Singh Dhaliwal  </p>
      <p class="mb-1">Vogelsangstr.23</p>   
      <p class="mb-1">Hanau 63457 </p>   
      <p class="mb-1">Email: tonidhaliwal@gmail.com </p>   
 
-
+<div>
 	<h1 class="mt-10 mb-3 text-3xl font-bold ">Notice in accordance with the Consumer Dispute 
                                         Settlement Act (VSBG)</h1>
 <p class="mb-3">We are not willing and obliged to participate in dispute resolution proceedings 
@@ -53,6 +54,7 @@
                     website deviate from the aforementioned paragraphs, this will be expressly 
                     pointed out at the appropriate place. In this case, the special conditions of use 
                     shall apply in the respective individual case. </p>
+</div>
 </div>
 
 <Footer></Footer>
