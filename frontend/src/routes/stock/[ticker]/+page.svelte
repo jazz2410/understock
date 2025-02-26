@@ -16,6 +16,7 @@
 	let ticker;
 	let userData;
 	let stockData = [];
+	let selectedEvaluation = 'DCF';
 
 	//Get the ticker symbol from URL
 	const unsubscribe = page.subscribe(($page) => {
@@ -56,7 +57,8 @@
 	}
 </script>
 <div class="px-12">
-<Card color="black">
+<div class="flex flex-col lg:flex-row items-center justify-between mx-auto max-w-3xl">
+<Card color="black my-5">
 	<h1 class="mb-2 text-2xl font-bold text-white">
 		{stockData.length > 0 ? stockData[0].stockName : 'Loading...'}
 		({stockData.length > 0 ? stockData[0].ticker : 'Loading...'})
@@ -80,7 +82,41 @@
 			? formatNumber2(stockData[0].sharesOutstanding)
 			: 'Loading...'}
 	</h1>
+	<h1 class="text-1xl font-semibold text-white">
+		Earnings per share [USD]: {stockData.length > 0
+			? formatNumber2(stockData[0].eps)
+			: 'Loading...'}
+	</h1>
+	<h1 class="text-1xl font-semibold text-white">
+		Earnings per share growth rate [%]: {stockData.length > 0
+			? (stockData[0].future_fcf_growth * 100).toFixed(2)
+			: 'Loading...'}
+	</h1>
+	<h1 class="text-1xl font-semibold text-white">
+		Bond yield [%]: {stockData.length > 0
+			? (stockData[0].bondYield * 1).toFixed(2)
+			: 'Loading...'}
+	</h1>
 </Card>
+<div class="mx-12 my-5">
+	<Card color="black">
+		<h1 class="mb-2 text-2xl font-bold text-white">
+			Graham evaluation
+		</h1>
+		<p class="text-l mb-2 font-semibold text-white">
+			<span class="text-orange-600">Fair value per share (Graham)</span> = (EPS x (8.5 + 2g) x 4.4 ) / Bond yield
+		</p>
+		<p class="text-xl text-white">
+			<span class="font-extrabold underline decoration-double text-orange-600"
+				>{stockData.length > 0 ? stockData[0].fairValueGraham : 'Loading...'} USD</span
+			>
+			= ({stockData.length > 0 ? formatNumber3(stockData[0].eps) : 'Loading...'} x (8.5  + 2 x {stockData.length > 0 ? (stockData[0].future_fcf_growth ) : 'Loading...'} ) x 4.4 )  / {stockData.length > 0 ? formatNumber3(stockData[0].bondYield) : 'Loading...'}
+		</p>
+
+	</Card>
+
+</div>
+</div>
 
 <div class="items-center mt-1 flex justify-center">
 	<Table hoverable={true} striped={true} color="black">
@@ -158,7 +194,7 @@
 		</TableBody>
 	</Table>
 </div>
-<div class="item-center mb-3 mt-3 flex justify-center">
+<div class="item-center mb-5 flex justify-center">
 	<p style="font-size: 0.9em; color: gray;">
 		Numbers are in millions and USD. CF = Cashflow. FCF = Future Cashflows. DCF = Discounted
 		Cashflows.
@@ -167,8 +203,11 @@
 
 <div class="flex items-center justify-center">
 	<Card color="black" class="min-w-l">
+		<h1 class="mb-2 text-2xl font-bold text-white">
+			DCF evaluation
+		</h1>
 		<p class="text-l mb-2 font-semibold text-white">
-			Fair value per share = Fair value / Shares outstanding
+			<span class="text-orange-600">Fair value per share (DCF)</span> = Fair value / Shares outstanding
 		</p>
 		<p class="text-xl text-white">
 			<span class="font-extrabold underline decoration-double text-orange-600"
