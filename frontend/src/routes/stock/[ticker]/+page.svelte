@@ -24,8 +24,8 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`/api/stock/${ticker}`);
-			//const response = await fetch(`http://localhost:8000/stock/${ticker}`);
+			//const response = await fetch(`/api/stock/${ticker}`);
+			const response = await fetch(`http://localhost:8000/stock/${ticker}`);
 			stockData = await response.json();
 			console.log(stockData);
 		} catch (e) {
@@ -83,7 +83,7 @@
 </Card>
 
 <div class="items-center mt-1 flex justify-center">
-	<Table hoverable={true} striped={true}>
+	<Table hoverable={true} striped={true} color="black">
 		<TableHead>
 			<TableHeadCell class="!p-4"></TableHeadCell>
 			<TableHeadCell class="text-white">Last reported</TableHeadCell>
@@ -97,7 +97,7 @@
 		<TableBody tableBodyClass="divide-y">
 			<TableBodyRow>
 				<TableBodyCell class="!p-4">FCF</TableBodyCell>
-				<TableBodyCell
+				<TableBodyCell class="text-white"
 					>{stockData.length > 0 ? formatNumber(stockData[0].last_cf) : 'Loading...'}</TableBodyCell
 				>
 				<TableBodyCell
