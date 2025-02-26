@@ -98,7 +98,7 @@
 			: 'Loading...'}
 	</h1>
 </Card>
-<div class="mx-12 my-5">
+<div class="md:mx-12 mx-2 my-5">
 	<Card color="black">
 		<h1 class="mb-2 text-2xl font-bold text-white">
 			Graham evaluation

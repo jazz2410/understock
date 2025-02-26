@@ -4,7 +4,7 @@
 	import Navbar from '$lib/Navbar.svelte';
 </script>
 
-<div class="bg-black min-h-screen text-white px-10">
+<div class="bg-black min-h-screen text-white px-2 md:px-10">
 <Navbar />
 {@render children()}
 </div>
