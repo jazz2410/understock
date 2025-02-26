@@ -21,6 +21,7 @@ def run(ticker_data):
     terminal_value_multiplier = 10
     ts = time.time()
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    bond_yield = get_aaa_bond_yield()  # Fetch AAA bond yield
 
     # Fetch the stock data
     for ticker_symbol in ticker_symbols:
@@ -57,6 +58,9 @@ def run(ticker_data):
         first_cashflow = cashflow.iloc[3]
         historic_fcf_growth = ( last_cashflow / first_cashflow ) ** ( 1 / 3  )  - 1 #Growth rate over last 4 years
     
+        if last_cashflow < 0:
+            continue
+    
         if isinstance(historic_fcf_growth,complex):
             continue
     
@@ -76,15 +80,15 @@ def run(ticker_data):
         fair_value_share = round(fair_value_share,2)
         
         ###Begin of Graham evaluation#####################################
-        bond_yield = get_aaa_bond_yield()  # Fetch AAA bond yield
+        if eps < 0:
+            continue
         fair_value_graham = (eps * (8.5 + 2 * future_fcf_growth) * 4.4) / bond_yield
         fair_value_graham = round(fair_value_graham,2)
         delta_graham = (fair_value_graham - last_price) / last_price * 100
         delta_graham = round(delta_graham,1)
         ##End of Graham evaluation#########################################
         
-        
-        if last_price < fair_value_share:
+        if last_price < fair_value_share or last_price < fair_value_graham:
             delta = (fair_value_share - last_price) / last_price * 100
             delta = round(delta,1)
             print(ticker_symbol)
@@ -102,8 +106,8 @@ def run(ticker_data):
 
     columns = ["ticker","stockName", "lastPrice","eps", "fairValue","fairValueShare","fairValueGraham","sharesOutstanding","historic_fcf_growth","future_fcf_growth", "delta","delta_graham","last_cf","fcf_1","fcf_2","fcf_3","fcf_4","fcf_5","fcf_6","dcf_1","dcf_2","dcf_3","dcf_4","dcf_5","dcf_6","bondYield","timestamp"]
 
-    #path = "/var/www/understock/script/output.csv"
-    path = "output.csv"
+    path = "/var/www/understock/script/output.csv"
+    #path = "output.csv"
 
     with open(path, mode="w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=columns)

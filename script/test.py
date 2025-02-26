@@ -1,5 +1,5 @@
 from write_data import run
 
-tickers= ["ACGL","AMP","VTRS"]
+tickers= ["ACGL","AMP","GM"]
 
 run(tickers)

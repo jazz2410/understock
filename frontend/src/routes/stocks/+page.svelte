@@ -18,8 +18,8 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch('http://localhost:8000/stocks');
-			//const response = await fetch('/api/stocks');
+			//const response = await fetch('http://localhost:8000/stocks');
+			const response = await fetch('/api/stocks');
 			items = await response.json();
 			console.log(items);
 		} catch (error) {
@@ -123,7 +123,7 @@
 						<TableHeadCell class="text-white">Fair value [USD] (Graham)</TableHeadCell>
 						<TableHeadCell
 							class="text-white"
-							sort={(a, b) => a.delta - b.delta}
+							sort={(a, b) => a.delta_graham - b.delta_graham}
 							defaultDirection="desc">DELTA [%] (DCF)</TableHeadCell
 						>
 					</TableHead>
