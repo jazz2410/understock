@@ -5,16 +5,33 @@ import time
 import csv
 import requests
 
-def get_tickers() -> pd.DataFrame:
-    url = 'https://en.m.wikipedia.org/wiki/List_of_S%26P_500_companies'
-    return pd.read_html(url, attrs={'id': 'constituents'}, index_col='Symbol')[0]
+def get_tickers() -> list:
+    
+    def get_sp500_tickers() -> list:
+        url = 'https://en.m.wikipedia.org/wiki/List_of_S%26P_500_companies'
+        sp500 = pd.read_html(url, attrs={'id': 'constituents'})[0]
+        return sp500.iloc[:, 0].tolist()  # Convert first column to a list
+
+    def get_eurostoxx50_tickers() -> list:
+        url = 'https://en.m.wikipedia.org/wiki/EURO_STOXX_50'
+        tables = pd.read_html(url)
+        
+        for table in tables:
+            if "Ticker" in table.columns:
+                return table["Ticker"].tolist()  # Convert "Ticker" column to a list
+
+        # Fetch tickers
+    sp500_tickers = get_sp500_tickers()
+    eurostoxx50_tickers = get_eurostoxx50_tickers()
+
+    # Combine both lists into one structure
+    all_tickers = sp500_tickers + eurostoxx50_tickers  
+    return all_tickers
 
 def run(ticker_data):
     
     undervalued_stocks = []
-    
-    ticker_symbols = ticker_data.index.to_list()
-    #ticker_symbols = ticker_data
+    ticker_symbols = ticker_data
     
     forecast_years = 5
     discount_rate = 0.15
@@ -42,8 +59,7 @@ def run(ticker_data):
             continue
 
         try:
-            operating_cashflow = cash_flow.loc["Cash Flow From Continuing Operating Activities"]
-            capital_expenditure = cash_flow.loc["Capital Expenditure"]
+            free_cashflow = cash_flow.loc["Free Cash Flow"]
             shares_outstanding = stock.info['sharesOutstanding']  # Total shares outstanding
             forward_pe_ratio = stock.info.get("forwardPE")
         except KeyError:
@@ -53,7 +69,7 @@ def run(ticker_data):
         if forward_pe_ratio > 15:
             continue
 
-        cashflow = operating_cashflow + capital_expenditure
+        cashflow = free_cashflow
         last_cashflow = cashflow.iloc[0]
         first_cashflow = cashflow.iloc[3]
         historic_fcf_growth = ( last_cashflow / first_cashflow ) ** ( 1 / 3  )  - 1 #Growth rate over last 4 years
@@ -106,8 +122,8 @@ def run(ticker_data):
 
     columns = ["ticker","stockName", "lastPrice","eps", "fairValue","fairValueShare","fairValueGraham","sharesOutstanding","historic_fcf_growth","future_fcf_growth", "delta","delta_graham","last_cf","fcf_1","fcf_2","fcf_3","fcf_4","fcf_5","fcf_6","dcf_1","dcf_2","dcf_3","dcf_4","dcf_5","dcf_6","bondYield","timestamp"]
 
-    path = "/var/www/understock/script/output.csv"
-    #path = "output.csv"
+    #path = "/var/www/understock/script/output.csv"
+    path = "output.csv"
 
     with open(path, mode="w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=columns)

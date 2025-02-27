@@ -1,5 +1,5 @@
 from write_data import run
-
-tickers= ["ACGL","AMP","GM"]
-
+import pandas as pd
+tickers= ["VOW.DE","BMW.DE","DHL.DE","AAPL","OXY","ACGL"]
 run(tickers)
+
