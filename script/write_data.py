@@ -122,8 +122,8 @@ def run(ticker_data):
 
     columns = ["ticker","stockName", "lastPrice","eps", "fairValue","fairValueShare","fairValueGraham","sharesOutstanding","historic_fcf_growth","future_fcf_growth", "delta","delta_graham","last_cf","fcf_1","fcf_2","fcf_3","fcf_4","fcf_5","fcf_6","dcf_1","dcf_2","dcf_3","dcf_4","dcf_5","dcf_6","bondYield","timestamp"]
 
-    #path = "/var/www/understock/script/output.csv"
-    path = "output.csv"
+    path = "/var/www/understock/script/output.csv"
+    #path = "output.csv"
 
     with open(path, mode="w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=columns)
