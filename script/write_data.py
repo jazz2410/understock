@@ -66,24 +66,29 @@ def run(ticker_data):
             print("Error for missing data in operating cash flow,CapEx or outstanding shares.")
             continue
         
-        if forward_pe_ratio > 15:
-            continue
-
         cashflow = free_cashflow
+        
+        if len(cashflow) < 4:
+            continue
+        
         last_cashflow = cashflow.iloc[0]
-        first_cashflow = cashflow.iloc[3]
-        historic_fcf_growth = ( last_cashflow / first_cashflow ) ** ( 1 / 3  )  - 1 #Growth rate over last 4 years
-    
         if last_cashflow < 0:
             continue
-    
-        if isinstance(historic_fcf_growth,complex):
+        if eps < 0:
             continue
-    
-        if historic_fcf_growth > 0.05:
-            future_fcf_growth = 0.05
+        
+        first_cashflow = cashflow.iloc[3]
+        historic_fcf_growth = ( last_cashflow / first_cashflow ) ** ( 1 / 3  )  - 1 #Growth rate over last 4 years
+        
+        if isinstance(historic_fcf_growth,complex):
+            future_fcf_growth = 0
         else:
-            future_fcf_growth = historic_fcf_growth
+            if historic_fcf_growth > 0.05:
+                future_fcf_growth = 0.05
+            elif historic_fcf_growth < -0.05:
+                future_fcf_growth = -0.05
+            else:
+                future_fcf_growth = historic_fcf_growth
         
         forecasted_fcf = [ last_cashflow  * ( 1 + future_fcf_growth ) ** i for i in range(1,forecast_years + 1) ]
         terminal_value = forecasted_fcf[-1] * terminal_value_multiplier
@@ -96,25 +101,23 @@ def run(ticker_data):
         fair_value_share = round(fair_value_share,2)
         
         ###Begin of Graham evaluation#####################################
-        if eps < 0:
-            continue
-        fair_value_graham = (eps * (8.5 + 2 * future_fcf_growth) * 4.4) / bond_yield
+        fair_value_graham = (eps * 8.5  * 4.4) / bond_yield
         fair_value_graham = round(fair_value_graham,2)
         delta_graham = (fair_value_graham - last_price) / last_price * 100
         delta_graham = round(delta_graham,1)
         ##End of Graham evaluation#########################################
         
-        if last_price < fair_value_share or last_price < fair_value_graham:
-            delta = (fair_value_share - last_price) / last_price * 100
-            delta = round(delta,1)
-            print(ticker_symbol)
-            print(last_price)
-            print(fair_value_share)
-            print(historic_fcf_growth)
-            print(future_fcf_growth)
-            print(delta)
-            data = { "ticker":ticker_symbol,"stockName" : stock_name, "lastPrice" : last_price,"eps" : eps, "fairValue" : fair_value,"fairValueShare" : fair_value_share,"fairValueGraham" : fair_value_graham,"sharesOutstanding" : shares_outstanding, "historic_fcf_growth" : historic_fcf_growth,"future_fcf_growth" : future_fcf_growth, "delta" : delta,"delta_graham" : delta_graham,"last_cf" : last_cashflow,"fcf_1" : forecasted_fcf[0], "fcf_2" : forecasted_fcf[1], "fcf_3" : forecasted_fcf[2], 'fcf_4' : forecasted_fcf[3], 'fcf_5' : forecasted_fcf[4],'fcf_6' : forecasted_fcf[5],"dcf_1" : discounted_fcf[0], "dcf_2" : discounted_fcf[1], "dcf_3" : discounted_fcf[2], "dcf_4" : discounted_fcf[3], "dcf_5" : discounted_fcf[4],"dcf_6" : discounted_fcf[5],"bondYield" : bond_yield, "timestamp" : timestamp }
-            undervalued_stocks.append(data)
+
+        delta = (fair_value_share - last_price) / last_price * 100
+        delta = round(delta,1)
+        print(ticker_symbol)
+        print(last_price)
+        print(fair_value_share)
+        print(historic_fcf_growth)
+        print(future_fcf_growth)
+        print(delta)
+        data = { "ticker":ticker_symbol,"stockName" : stock_name, "lastPrice" : last_price,"eps" : eps, "fairValue" : fair_value,"fairValueShare" : fair_value_share,"fairValueGraham" : fair_value_graham,"sharesOutstanding" : shares_outstanding, "historic_fcf_growth" : historic_fcf_growth,"future_fcf_growth" : future_fcf_growth, "delta" : delta,"delta_graham" : delta_graham,"last_cf" : last_cashflow,"fcf_1" : forecasted_fcf[0], "fcf_2" : forecasted_fcf[1], "fcf_3" : forecasted_fcf[2], 'fcf_4' : forecasted_fcf[3], 'fcf_5' : forecasted_fcf[4],'fcf_6' : forecasted_fcf[5],"dcf_1" : discounted_fcf[0], "dcf_2" : discounted_fcf[1], "dcf_3" : discounted_fcf[2], "dcf_4" : discounted_fcf[3], "dcf_5" : discounted_fcf[4],"dcf_6" : discounted_fcf[5],"bondYield" : bond_yield, "timestamp" : timestamp }
+        undervalued_stocks.append(data)
             
 
     print("Analysis ended")
@@ -122,8 +125,8 @@ def run(ticker_data):
 
     columns = ["ticker","stockName", "lastPrice","eps", "fairValue","fairValueShare","fairValueGraham","sharesOutstanding","historic_fcf_growth","future_fcf_growth", "delta","delta_graham","last_cf","fcf_1","fcf_2","fcf_3","fcf_4","fcf_5","fcf_6","dcf_1","dcf_2","dcf_3","dcf_4","dcf_5","dcf_6","bondYield","timestamp"]
 
-    path = "/var/www/understock/script/output.csv"
-    #path = "output.csv"
+    #path = "/var/www/understock/script/output.csv"
+    path = "output.csv"
 
     with open(path, mode="w", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=columns)

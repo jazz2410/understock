@@ -13,11 +13,15 @@
 	import { Card } from 'flowbite-svelte';
 	import Footer from '$lib/Footer.svelte';
 	import { goto } from '$app/navigation';
+	import katex from 'katex';
+  	import 'katex/dist/katex.min.css';
+
 	let ticker;
 	let userData;
 	let stockData = [];
 	let selectedEvaluation = 'DCF';
-
+	let formula = '';
+	let formulaGraham = '';
 	//Get the ticker symbol from URL
 	const unsubscribe = page.subscribe(($page) => {
 		ticker = $page.params.ticker;
@@ -25,10 +29,17 @@
 
 	onMount(async () => {
 		try {
-			const response = await fetch(`/api/stock/${ticker}`);
-			//const response = await fetch(`http://localhost:8000/stock/${ticker}`);
+			//const response = await fetch(`/api/stock/${ticker}`);
+			const response = await fetch(`http://localhost:8000/stock/${ticker}`);
 			stockData = await response.json();
 			console.log(stockData);
+			let eps = stockData[0].eps
+			let bondYield = stockData[0].bondYield
+			let fairValueGraham = stockData[0].fairValueGraham
+			formulaGraham = `V = \\frac{\\text{EPS} \\times 8.5  \\times 4.4}{\\text{Bond yield}}`; 
+			formula = `${fairValueGraham} \\text{ USD}  = \\frac{${eps}  \\times 8.5 \\times 4.4}{${bondYield}}`;
+			console.log(formula)
+
 		} catch (e) {
 			console.error('Error fetching stock data:', e);
 		}
@@ -84,7 +95,7 @@
 	</h1>
 	<h1 class="text-1xl font-semibold text-white">
 		Earnings per share [USD]: {stockData.length > 0
-			? formatNumber2(stockData[0].eps)
+			? formatNumber3(stockData[0].eps)
 			: 'Loading...'}
 	</h1>
 	<h1 class="text-1xl font-semibold text-white">
@@ -98,21 +109,21 @@
 			: 'Loading...'}
 	</h1>
 </Card>
-<div class="md:mx-12 mx-2 my-5">
+<div class="md:mx-10 mx-2 my-5">
 	<Card color="black">
 		<h1 class="mb-2 text-2xl font-bold text-white">
 			Graham evaluation
 		</h1>
-		<p class="text-l mb-2 font-semibold text-white">
-			<span class="text-orange-600">Fair value per share (Graham)</span> = (EPS x (8.5 + 2g) x 4.4 ) / Bond yield
-		</p>
-		<p class="text-xl text-white">
-			<span class="font-extrabold underline decoration-double text-orange-600"
-				>{stockData.length > 0 ? stockData[0].fairValueGraham : 'Loading...'} USD</span
-			>
-			= ({stockData.length > 0 ? formatNumber3(stockData[0].eps) : 'Loading...'} x (8.5  + 2 x {stockData.length > 0 ? (stockData[0].future_fcf_growth ) : 'Loading...'} ) x 4.4 )  / {stockData.length > 0 ? formatNumber3(stockData[0].bondYield) : 'Loading...'}
-		</p>
-
+		<div class="my-3">
+		{#if formulaGraham}
+		<p class="text-xl">{@html katex.renderToString(formulaGraham)}</p>
+		{/if}
+		</div>
+		<div class="my-3">
+		{#if formula}
+		<p class="text-xl">{@html katex.renderToString(formula)}</p>
+		{/if}
+	</div>
 	</Card>
 
 </div>

@@ -18,8 +18,8 @@
 
 	onMount(async () => {
 		try {
-			//const response = await fetch('http://localhost:8000/stocks');
-			const response = await fetch('/api/stocks');
+			const response = await fetch('http://localhost:8000/stocks');
+			//const response = await fetch('/api/stocks');
 			items = await response.json();
 			console.log(items);
 		} catch (error) {
@@ -34,7 +34,9 @@
 			<p class="mb-4 text-center text-sm text-gray-400">
 				📅 Table was updated on {items[0].timestamp}
 			</p>
-			<p class="text-center">Click on the ticker symbol to see the evaluation</p>
+			<p class="text-center my-2">Click on the ticker symbol or stock name to see the evaluation</p>
+			<p class="text-center my-2">Delta is the percentage difference between last price and fair value</p>
+			<p class="text-center my-2">Click on the delta column header to sort by highest delta</p>
 			<div class="mt-5 flex items-center justify-center">
 				<button on:click={() => { selectedEvaluation = 'DCF' }}
 					class="mx-3 my-1 transform cursor-pointer rounded-lg border border-white bg-black px-6 py-5 font-semibold text-black
@@ -86,7 +88,7 @@
 						<TableBodyRow slot="row" let:item>
 							<TableBodyCell>
 								<button
-									on:click={() => goto(`/stock/${item.ticker}`)}
+									on:click={() => window.open(`/stock/${item.ticker}`,'_blank')}
 									class="h-10 w-20 cursor-pointer hover:bg-orange-400"
 								>
 									{item.ticker}
@@ -95,14 +97,16 @@
 
 							<TableBodyCell>
 								<button
-									on:click={() => goto(`/stock/${item.ticker}`)}
+									on:click={() => window.open(`/stock/${item.ticker}`,'_blank')}
 									class="h-10 w-full cursor-pointer hover:bg-orange-400"
 								>
 									{item.stockName}
 								</button>
 							</TableBodyCell>
 							<TableBodyCell>{item.lastPrice}</TableBodyCell>
-							<TableBodyCell>{item.fairValueShare}</TableBodyCell>
+							<TableBodyCell><div class="px-3 py-3"  
+												class:!bg-red-500={item.fairValueShare < item.lastPrice} 
+											    class:!bg-green-700={item.fairValueShare > item.lastPrice}>{item.fairValueShare}</div></TableBodyCell>
 							<TableBodyCell>{item.delta}</TableBodyCell>
 						</TableBodyRow>
 					</TableBody>
@@ -138,7 +142,7 @@
 						<TableBodyRow slot="row" let:item>
 							<TableBodyCell>
 								<button
-									on:click={() => goto(`/stock/${item.ticker}`)}
+									on:click={() => window.open(`/stock/${item.ticker}`,'_blank')}
 									class="h-10 w-20 cursor-pointer hover:bg-orange-400"
 								>
 									{item.ticker}
@@ -147,14 +151,17 @@
 
 							<TableBodyCell>
 								<button
-									on:click={() => goto(`/stock/${item.ticker}`)}
+									on:click={() => window.open(`/stock/${item.ticker}`,'_blank')}
 									class="h-10 w-full cursor-pointer hover:bg-orange-400"
 								>
 									{item.stockName}
 								</button>
 							</TableBodyCell>
 							<TableBodyCell>{item.lastPrice}</TableBodyCell>
-							<TableBodyCell>{item.fairValueGraham}</TableBodyCell>
+							<TableBodyCell><div class="px-3 py-3"  
+								class:!bg-red-500={item.fairValueGraham < item.lastPrice} 
+								class:!bg-green-700={item.fairValueGraham > item.lastPrice}>
+								{item.fairValueGraham}</div></TableBodyCell>
 							<TableBodyCell>{item.delta_graham}</TableBodyCell>
 						</TableBodyRow>
 					</TableBody>
@@ -196,7 +203,7 @@
 				<TableBodyRow slot="row" let:item>
 					<TableBodyCell>
 						<button
-							on:click={() => goto(`/stock/${item.ticker}`)}
+							on:click={() => window.open(`/stock/${item.ticker}`,'_blank')}
 							class="h-10 w-20 cursor-pointer hover:bg-orange-400"
 						>
 							{item.ticker}
@@ -205,15 +212,25 @@
 
 					<TableBodyCell>
 						<button
-							on:click={() => goto(`/stock/${item.ticker}`)}
+							on:click={() => window.open(`/stock/${item.ticker}`,'_blank')}
 							class="h-10 w-full cursor-pointer hover:bg-orange-400"
 						>
 							{item.stockName}
 						</button>
 					</TableBodyCell>
 					<TableBodyCell>{item.lastPrice}</TableBodyCell>
-					<TableBodyCell>{item.fairValueShare}</TableBodyCell>
-					<TableBodyCell>{item.fairValueGraham}</TableBodyCell>
+					<TableBodyCell>
+						<div class="px-3 py-3"  
+								class:!bg-red-500={item.fairValueShare < item.lastPrice} 
+								class:!bg-green-700={item.fairValueShare > item.lastPrice}>
+								{item.fairValueShare}</div>
+						</TableBodyCell>
+					<TableBodyCell>
+						<div class="px-3 py-3"  
+						class:!bg-red-500={item.fairValueGraham < item.lastPrice} 
+						class:!bg-green-700={item.fairValueGraham > item.lastPrice}>
+						{item.fairValueGraham}</div>
+						</TableBodyCell>
 					<TableBodyCell>{item.delta}</TableBodyCell>
 					<TableBodyCell>{item.delta_graham}</TableBodyCell>
 				</TableBodyRow>
