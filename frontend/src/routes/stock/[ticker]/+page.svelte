@@ -22,6 +22,8 @@
 	let selectedEvaluation = 'DCF';
 	let formula = '';
 	let formulaGraham = '';
+	let formula_DCF = '';
+	let formula_DCF_value = '';
 	//Get the ticker symbol from URL
 	const unsubscribe = page.subscribe(($page) => {
 		ticker = $page.params.ticker;
@@ -29,15 +31,20 @@
 
 	onMount(async () => {
 		try {
-			//const response = await fetch(`/api/stock/${ticker}`);
-			const response = await fetch(`http://localhost:8000/stock/${ticker}`);
+			const response = await fetch(`/api/stock/${ticker}`);
+			//const response = await fetch(`http://localhost:8000/stock/${ticker}`);
 			stockData = await response.json();
 			console.log(stockData);
 			let eps = stockData[0].eps
 			let bondYield = stockData[0].bondYield
 			let fairValueGraham = stockData[0].fairValueGraham
+			let fairValueShare = stockData[0].fairValueShare.toFixed(2)
+			let fairValue = stockData[0].fairValue.toFixed(2)
 			formulaGraham = `V = \\frac{\\text{EPS} \\times 8.5  \\times 4.4}{\\text{Bond yield}}`; 
 			formula = `${fairValueGraham} \\text{ USD}  = \\frac{${eps}  \\times 8.5 \\times 4.4}{${bondYield}}`;
+			formula_DCF = `V = \\frac{\\text{Fair value(DCF)}}{\\text{Outstanding shares}}`;
+			formula_DCF_value = `${fairValueShare} \\text{ USD} = \\frac{${fairValue}\\text{ USD}}{${stockData[0].sharesOutstanding}}`;
+			
 			console.log(formula)
 
 		} catch (e) {
@@ -109,7 +116,7 @@
 			: 'Loading...'}
 	</h1>
 </Card>
-<div class="md:mx-10 mx-2 my-5">
+<div class="md:mx-8 mx-2 my-5">
 	<Card color="black">
 		<h1 class="mb-2 text-2xl font-bold text-white">
 			Graham evaluation
@@ -217,18 +224,15 @@
 		<h1 class="mb-2 text-2xl font-bold text-white">
 			DCF evaluation
 		</h1>
-		<p class="text-l mb-2 font-semibold text-white">
-			<span class="text-orange-600">Fair value per share (DCF)</span> = Fair value / Shares outstanding
-		</p>
-		<p class="text-xl text-white">
-			<span class="font-extrabold underline decoration-double text-orange-600"
-				>{stockData.length > 0 ? stockData[0].fairValueShare : 'Loading...'} USD</span
-			>
-			= {stockData.length > 0 ? formatNumber3(stockData[0].fairValue) : 'Loading...'} USD / {stockData.length >
-			0
-				? formatNumber2(stockData[0].sharesOutstanding)
-				: 'Loading...'}
-		</p>
+		<div class="my-3">
+		{#if formula_DCF}
+		<p class="text-xl">{@html katex.renderToString(formula_DCF)}</p>
+		{/if}
+		</div>
+		<div class="my-3">
+		{#if formula_DCF_value}
+		<p class="text-xl">{@html katex.renderToString(formula_DCF_value)}</p>
+		{/if}
 	</Card>
 </div>
 </div>
